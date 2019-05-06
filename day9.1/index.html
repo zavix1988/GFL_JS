@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="main.js"></script>
+</head>
+<body>
+    
+    <script>
+//Что такое Date
+        var date = new Date();
+//Узнать текущий день месяца
+        console.log(date.getDate());
+//Узнать текущий номер месяца
+        console.log(date.getMonth() + 1);
+//Узнать текущий год
+        console.log(date.getFullYear());
+//Узнать количество дней в текущем месяце
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    console.log((lastDay-firstDay)/(1000*60*60*24)+1)
+//Узнать день недели
+    console.log(date.getDay())
+//Установить новую дату
+
+//Узнать количество дней в след. месяце
+
+//Узнать кол. дней в пред. месяце
+
+//Узнать кол-во недель в месяце
+//Вывести Название месяца
+//Вывести Название дня недели
+    </script>
+</body>
+</html>
