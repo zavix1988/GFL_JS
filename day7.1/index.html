@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+    <h1>Shop</h1>
+
+    <div id="shop">
+        <ul>
+            <li v-for="(item, key) in items">  
+                {{ item.name }} ${{ item.price }}
+                <button type="button" v-on:click="add(key)">Add</button>
+            </li>
+        </ul>
+        <ul id="list">
+            <li v-for="(item, key) in list">
+                {{ items[key].name }} - {{ item }}
+                <button type="button" v-on:click="remove(key)">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="day7.1/js/script.js"></script>
+</body>
+</html>
