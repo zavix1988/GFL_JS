@@ -34,8 +34,6 @@ export class ListItemComponent implements OnInit {
   apply() {
     this.edit_mode = true;
     this.itemChange.emit(this.item);
-    localStorage.setItem(this.index, this.item);
-
   }
 
 }
