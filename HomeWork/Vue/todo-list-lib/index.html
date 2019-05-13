@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .todo {
+            width: 500px;
+            border: 1px solid lightgrey;
+            border-radius: 10px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .todo h1 {
+            text-align: center;
+        }
+
+        .todo .item-text {
+            display: inline-block;
+            width: 300px;
+        }
+
+        .todo .edit-input {
+            display: inline-block;
+            width: 296px;
+        }
+    </style>
+
+    <div class="todo" id="todoVue">
+        <h1>Todo List</h1>
+        <ul class="todo-list js_todo_list">
+            <todo-item v-for="(item, key) in list" :key="key" :index="key" :item="item" @remove="remove($event)"
+                @apply="apply(key, $event)"></todo-item>
+        </ul>
+        <div class="add-section">
+            <input type="text" v-model="add_val" @keyup.enter="add">
+            <button type="button" @click="add">Add</button>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/template" id="todoitem">
+
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
