@@ -1,140 +1,76 @@
 Vue.component('calendar', {
     template: `
-                        <table id="calendar2">
-                        <thead>
-                            <tr>
-                                {{ setDefaultVals }}
-                                <td @click="prevMonth">‹</td>
-                                <td colspan="5">{{ monthYear }}</td>
-                                <td @click="nextMonth">›</td>
-                            </tr>
-                            <tr>
-                                <td>Mon</td>
-                                <td>Tue</td>
-                                <td>Wed</td>
-                                <td>Thu</td>
-                                <td>Fri</td>
-                                <td>Sat</td>
-                                <td>Sun</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="week in days">
-                                <td v-for="day in week">{{ day.dayNum }}</td>
-                            </tr>
-                        </tbody>
-                    </table>`,
-    data: function () {
+    <table>
+        <thead>
+            <tr>
+                {{ setDefaultVals }}
+                <td><button @click="prevMonth">‹</button></td>
+                <td colspan="5">{{ monthYear }}</td>
+                <td><button @click="nextMonth">›</button></td>
+            </tr>
+            <tr v-if="beginWeekMonday">
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+            <tr v-else>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>            
+        </thead>
+        <tbody>
+            <tr>
+                <td v-for="day in daysInMonth">{{ day }}</td>
+            </tr>
+        </tbody>
+    </table>
+    `,
+    data() {
         return {
-            date: new Date(),
+            date: new Date,
             monthes: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'October', 'December'],
             selectedMonth: undefined,
             selectedYear: undefined,
-            daysInSelectedMonth: undefined,
             lastDay: undefined,
-            firstWeekDay: undefined,
-            lastWeekDay: undefined,
-            days: []
+            beginWeekMonday: false,
+            daysInMonth: undefined,
+
         }
     },
     methods: {
-        currentMonth: function () {
-            this.selectedMonth = this.date.getMonth();
-            return this.selectedMonth
+        getCurrentMonth: function () {
+            return this.selectedMonth = this.date.getMonth();
         },
-        currentYear: function () {
-            this.selectedYear = this.date.getFullYear();
-            return this.selectedYear;
+        getCurrentYear: function () {
+            return this.selectedYear = this.date.getFullYear();
         },
-        showMonth: function (month) {
-            this.selectedMonth = month;
-            return this.monthes[month];
-        },
-        nextMonth: function () {
-            this.getFirstWeekDay();
-            this.getLastDay();
-            this.getLastWeekDay();
-            this.getMonthesDays();
-            if (this.selectedMonth < 11) {
-                return this.selectedMonth++;
-            }
-            this.selectedYear++;
-            return this.selectedMonth = 0;
-        },
-        prevMonth() {
-            this.getFirstWeekDay();
-            this.getLastDay();
-            this.getLastWeekDay();
-            this.getMonthesDays();
-            if (this.selectedMonth > 0) {
-                return this.selectedMonth--;
-            }
-            this.selectedYear--;
-            return this.selectedMonth = 11;
-        },
-        getFirstWeekDay: function () {
-            this.firstWeekDay = new Date(this.selectedYear, this.selectedMonth, 1).getDay();
-        },
-        getLastDay: function () {
-            this.lastDay = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate()
-        },
-        getLastWeekDay: function () {
-            this.getLastDay();
-            this.lastWeekDay = new Date(this.selectedYear, this.selectedMonth, this.lastDay).getDay()
-        },
-        getMonthesDays: function () {
-            var week = 0;
-            this.days[week] = [];
-            for (var i = 1; i <= this.lastDay; i++) {
-                if (new Date(this.selectedYear, this.selectedMonth, i).getDay() != 1) {
-                    this.days[week].push({
-                        dayNum: i,
-                        dayWeek: new Date(this.selectedYear, this.selectedMonth, i).getDay()
-                    })
-                } else {
-                    week++;
-                    if (!this.days[week]) {
-                        this.days[week] = [];
-                    }
-                    this.days[week].push({
-                        dayNum: i,
-                        dayWeek: new Date(this.selectedYear, this.selectedMonth, i).getDay()
-                    })
-                }
-            }
-
-        },
-        formatFirstWeek: function () {
-            //console.log(this.days[0].length)
-            for (var i = this.days[0].length; i < 7; i++) {
-                console.log(i);
-                this.days[0].unshift({
-                    dayNum: undefined,
-                    dayWeek: i
-                });
-            }
+        getDaysInMonth: function() {
+           return this.daysInMonth =  33 - new Date(this.selectedYear, this.selectedMonth, 33).getDate()
         }
+
+    },
+    created: function() {
+        this.getCurrentMonth();
+        this.getCurrentYear();   
+        this.getDaysInMonth();   
     },
     computed: {
-        setDefaultVals: function () {
-            this.getFirstWeekDay();
-            this.getLastWeekDay();
-            this.getLastDay();
-            this.getMonthesDays();
-            this.formatFirstWeek();
-        },
-        monthYear: function () {
-            this.days = [];
-            if (void 0 === this.selectedMonth) {
-                this.selectedMonth = this.currentMonth();
-            }
-            if (void 0 === this.selectedYear) {
-                this.selectedYear = this.currentYear();
-            }
-            return this.monthes[this.selectedMonth] + " " + this.selectedYear;
+        monthYear(){
+            return this.monthes[this.date.getMonth()];
         }
     }
 });
+
+
 var app = new Vue({
     el: '#app'
 })
