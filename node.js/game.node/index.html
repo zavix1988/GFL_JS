@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Game</title>
+    <style>
+        .user {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello Node</h1>
+    <span id="message"></span>
+    <div id="app">
+        <div class="user" :style="{
+            backgroundColor: user.color,
+            top: user.position.top + 'px',
+            left: user.position.left + 'px'
+        }" v-for="user in users"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>
+
+        var game = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    users: {},
+                    online: false
+                }
+            },
+            created() {
+                this.connect();
+
+                document.addEventListener('keydown', (event) => {
+                    console.log(event);
+                    if (event.code.indexOf('Arrow') !== 1) {
+                        var json_data = JSON.stringify({
+                            type: 'move',
+                            info: event.code.replace('Arrow', '')
+                        });
+                        this.wsClient.send(json_data);
+                    }
+
+                });
+
+            },
+            methods: {
+                connect(){
+                    this.wsClient = new WebSocket('ws://localhost:8800');
+
+                    this.wsClient.addEventListener('open', () => {
+                        this.online = true;
+                    });
+
+                    this.wsClient.addEventListener('close', () => {
+                        this.online = false
+                    });
+
+                    this.wsClient.addEventListener('error', () => {});
+                    
+                    this.wsClient.addEventListener('message', (mes) => {
+                        try {
+                            var data = JSON.parse(mes.data);
+                            this.messageHandler(data);
+                        } catch (error) {}
+                    });
+                },
+                messageHandler(message){
+                    switch (message.type) {
+                        case 'new_user':
+                            var user = message.info;
+                            this.$set(this.users, user.id, user);
+                            break;
+                        case 'all_users': 
+                            var users = message.info;
+                            this.$set(this, 'users', users);
+                            break
+                        case 'remove_user':
+                            var id = message.info;
+                            this.$delete(this.users, id);
+                            break;
+                        case 'update_user':
+                            var user = message.info
+                            this.$set(this.users, user.id, user);
+                            break;
+                    }
+                }
+            }
+        })
+
+    </script>
+    <script type="example">
+        var count = 0;
+        // Creating connection to server
+        var wsClient = new WebSocket('ws://localhost:8800');
+
+        //listening server message
+        wsClient.addEventListener('message', (message) => {
+            document.querySelector('#message').innerHTML = count + ' ' + message.data;
+            count++;
+        })
+
+        setInterval(() => {
+            wsClient.send('ping');
+        }, 1000)
+    </script>
+</body>
+</html>
