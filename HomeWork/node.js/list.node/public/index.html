@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List</title>
+</head>
+<body>
+    <div class="input">
+        <label for="inputData">Enter message</label><br />
+        <input type="text" id="inputData">
+        <button onclick="sendPost()">Send</button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <button onclick="getMessages()">Get Messages</button>
+    <ul id="list">
+
+    </ul>
+<script>
+
+    var list = document.querySelector('#list');
+
+    var sendPost = function() {
+        let message = document.querySelector('#inputData').value;
+
+        // POST
+        fetch('/send',{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({message: message})
+        })
+
+        document.querySelector('#inputData').value = '';
+    }
+
+    var getMessages  = function() {
+        fetch('/get')
+        .then((res) => res.json())
+        .then((data) => {
+            //let messages = JSON.parse();
+            data.forEach(element => {
+                var li = document.createElement('li');
+                li.innerHTML = element.message;
+                list.appendChild(li);
+            });
+
+        })
+    }
+    
+    </script>
+</body>
+</html>

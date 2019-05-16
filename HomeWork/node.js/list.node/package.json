@@ -1,0 +1,14 @@
+{
+  "name": "list.node",
+  "version": "1.0.0",
+  "description": "homeWork",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AlexZ",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
