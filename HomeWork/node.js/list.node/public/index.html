@@ -43,6 +43,7 @@
     }
 
     var getMessages  = function() {
+        list.innerHTML = "";
         fetch('/get')
         .then((res) => res.json())
         .then((data) => {
@@ -52,7 +53,6 @@
                 li.innerHTML = element.message;
                 list.appendChild(li);
             });
-
         })
     }
     

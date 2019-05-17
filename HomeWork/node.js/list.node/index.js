@@ -9,7 +9,7 @@ server.use(bodyParser.json());
 var messages = []
 
 server.post('/send', (req, resp) => {
-     var message = req.body;
+     let message = req.body;
      messages.push(message);
      //console.log(messages);
 
