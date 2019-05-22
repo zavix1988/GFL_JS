@@ -3,23 +3,30 @@
     var $cart = $('#cart');
     var products = [
         {
-            name: 'Product 1',
-            price: 1
+            name: 'esp32',
+            price: 5,
         },
         {
-            name: 'Product 3',
-            price: 34
+            name: 'esp8266',
+            price: 2,
         },
         {
-            name: 'Product 8',
-            price: 17.5
+            name: 'arduino nano',
+            price: 4,
         },
         {
-            name: 'Product 2',
-            price: 175
-        }
+            name: 'Raspberry Pi3',
+            price: 50,
+        },
+        {
+            name: 'OrangePi + 2e',
+            price: 54,
+        },
+        {
+            name: 'Heltec LoRa 32',
+            price: 7,
+        },
     ];
-
     var cart = JSON.parse(localStorage.cart || '{}');
 
     var save_cart = function () {
@@ -27,7 +34,6 @@
     };
 
     var build_cart = function () {
-        console.log(cart);
         var cart_html = Object.keys(cart).map(function (prod_index) {
             var product = products[prod_index];
             var count = cart[prod_index];
